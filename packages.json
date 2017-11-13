@@ -1,0 +1,11 @@
+{
+    "package": {
+        "name": "vendor/project-name",
+        "version": "1.0.0",
+        "source": {
+          "url": "/tmp/project-name/.git",
+          "type": "git",
+          "reference": "master"
+        }
+    }
+}
