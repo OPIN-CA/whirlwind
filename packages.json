@@ -1,7 +1,7 @@
 {
     "packages": {
         "opin/whirlwind": {
-            "1.0.0": {
+            "master": {
                 "name": "opin/whirlwind",
                 "source": {
                     "reference": "",
