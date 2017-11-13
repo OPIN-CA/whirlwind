@@ -37,7 +37,7 @@
         "drupal/fences": "^2.0@alpha",
         "drupal/module_filter": "^3.1",
         "drupal/field_group": "^1.0",
-        "drupal/link_css": "1.x-dev",
+        "drupal/link_css": "^1.x",
         "drupal/twig_field_value": "^1.1",
         "drupal/svg_image_field": "^1.0",
         "drupal/workbench_access": "^1.0@alpha",
