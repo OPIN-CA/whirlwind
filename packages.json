@@ -1,9 +1,9 @@
 {
     "package": {
-        "name": "vendor/project-name",
+        "name": "opin/whirlwind",
         "version": "1.0.0",
         "source": {
-          "url": "/tmp/project-name/.git",
+          "url": "git@github.com:OPIN-CA/whirlwind.git",
           "type": "git",
           "reference": "master"
         }
