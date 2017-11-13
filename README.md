@@ -1,4 +1,4 @@
-This is a Composer-based installer for the [Lightning](https://www.drupal.org/project/lightning) Drupal distribution. Welcome to the future!
+This is a Composer-based installer for a forked version of the [Lightning](https://www.drupal.org/project/lightning) Drupal distribution. This fork is being developed by OPIN Software Inc
 
 ## Get Started
 ```
