@@ -1,7 +1,7 @@
 {
     "packages": {
         "opin/whirlwind": {
-            "master": {
+            "1.0.0": {
                 "name": "opin/whirlwind",
                 "source": {
                     "reference": "",
@@ -9,7 +9,7 @@
                     "url": "git@github.com:OPIN-CA/whirlwind.git"
                 },
                 "type": "project",
-                "version": "master"
+                "version": "1.0.0"
             }
         }
     }
