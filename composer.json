@@ -45,7 +45,21 @@
         "drupal/content_access": "^1.0@alpha",
         "drupal/contact_storage": "^1.0@beta",
         "drupal/moderation_sidebar": "^1.0-dev",
-        "drupal/scheduler": "^1.0@RC"
+        "drupal/scheduler": "^1.0@RC",
+        "drupal/address": "^1.2",
+        "drupal/addtoany": "^1.8",
+        "drupal/diff": "^1.0@RC",
+        "drupal/facets": "^1.0@alpha",
+        "drupal/google_analytics": "^2.2",
+        "drupal/image_effects": "^2.0",
+        "drupal/moderation_note": "^1.0@alpha",
+        "drupal/replicate": "1.x-dev",
+        "drupal/replicate_ui": "1.x-dev",
+        "drupal/responsive_preview": "^1.0@alpha",
+        "drupal/restui": "^1.15",
+        "drupal/revision_log_default": "^1.0",
+        "drupal/token": "^1.0",
+        "drupal/redirect": "^1.0@beta"
     },
     "repositories": [
         {
