@@ -42,7 +42,9 @@
         "drupal/workbench_access": "^1.0@alpha",
         "drupal/twig_tweak": "^1.9",
         "drupal/content_access": "^1.0@alpha",
-        "drupal/contact_storage": "^1.0@beta"
+        "drupal/contact_storage": "^1.0@beta",
+        "drupal/moderation_sidebar": "^1.0-dev",
+        "drupal/scheduler": "^1.0@RC"
     },
     "repositories": [
         {
