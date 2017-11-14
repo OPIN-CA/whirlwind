@@ -1,10 +1,27 @@
-This is a Composer-based installer for a forked version of the [Lightning](https://www.drupal.org/project/lightning) Drupal distribution. This fork is being developed by OPIN Software Inc
+This is a Composer-based installer for the OPIN Whirlwind distrobution: a forked version of the [Lightning](https://www.drupal.org/project/lightning) Drupal distribution. This fork is being developed by OPIN Software Inc
 
 ## Get Started
+
+In order to create a new project using this distribution run the following command:
 ```
 $ composer create-project opin/whirlwind MY_PROECT --repository-url="https://raw.githubusercontent.com/OPIN-CA/whirlwind/master/"
 ```
 Composer will create a new directory called MY_PROJECT containing a ```docroot``` directory with a full Whirlwind code base therein. You can then install it like you would any other Drupal site.
+
+## Dev Desktop
+
+If you are setting up a new environment using Acquia Dev Desktop or overriding an existing Acquia environment you will need to do so using the "composer install" command (as opposed to "create-project"). Delete the environment's "docroot" folder and add the attached composer.json file to the root directory.
+
+Your file structure should look like this:
+```
+./
+  - .git/
+  - .gitignore
+  - acquia-utils
+  - README.acquia
+  - composer.json
+```
+From this directory run "composer install" to install the OPIN whirlwind distribution
 
 ## Maintenance
 ```drush make```, ```drush pm-download```, ```drush pm-update``` and their ilk are the old-school way of maintaining your code base. Forget them. You're in Composer land now!
