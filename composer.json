@@ -23,6 +23,7 @@
         "drupal/styleguide": "^1.0@alpha"
     },
     "require": {
+        "composer/installers": "^1.2",
         "drupal-composer/drupal-scaffold": "^2.0.0",
         "cweagans/composer-patches": "^1.6.0",
         "acquia/lightning": "~2.2.0",
