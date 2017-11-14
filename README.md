@@ -2,9 +2,9 @@ This is a Composer-based installer for a forked version of the [Lightning](https
 
 ## Get Started
 ```
-$ composer create-project acquia/lightning-project MY_PROJECT
+$ composer create-project opin/whirlwind MY_PROECT --repository-url="https://raw.githubusercontent.com/OPIN-CA/whirlwind/master/"
 ```
-Composer will create a new directory called MY_PROJECT containing a ```docroot``` directory with a full Lightning code base therein. You can then install it like you would any other Drupal site.
+Composer will create a new directory called MY_PROJECT containing a ```docroot``` directory with a full Whirlwind code base therein. You can then install it like you would any other Drupal site.
 
 ## Maintenance
 ```drush make```, ```drush pm-download```, ```drush pm-update``` and their ilk are the old-school way of maintaining your code base. Forget them. You're in Composer land now!
@@ -27,12 +27,12 @@ But to be clear: it is still very helpful to use a site management tool like Dru
 ### Specifying a version
 you can specify a version from the command line with:
 
-    $ composer require drupal/<modulename>:<version> 
+    $ composer require drupal/<modulename>:<version>
 
 For example:
 
     $ composer require drupal/ctools:3.0.0-alpha26
-    $ composer require drupal/token:1.x-dev 
+    $ composer require drupal/token:1.x-dev
 
 In these examples, the composer version 3.0.0-alpha26 maps to the drupal.org version 8.x-3.0-alpha26 and 1.x-dev maps to 8.x-1.x branch on drupal.org.
 
