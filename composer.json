@@ -6,7 +6,6 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require-dev": {
-        "drupal/drupal-extension": "~3.3.0",
         "behat/mink": "~1.7",
         "behat/mink-goutte-driver": "~1.2",
         "jcalderonzumba/gastonjs": "~1.0.2",
@@ -24,8 +23,8 @@
         "composer/installers": "^1.2",
         "drupal-composer/drupal-scaffold": "^2.0.0",
         "cweagans/composer-patches": "^1.6.0",
-        "acquia/lightning": "~2.2.0",
-        "drupal/core": "~8.4.0",
+        "acquia/lightning": "~3.1.4",
+        "drupal/core": "~8.5.0",
         "drupal/adminimal_theme": "^1.3",
         "drupal/admin_toolbar": "^1.20",
         "drupal/adminimal_admin_toolbar": "^1.5",
@@ -44,12 +43,11 @@
         "drupal/address": "^1.3",
         "drupal/addtoany": "^1.8",
         "drupal/diff": "^1.0",
-        "drupal/facets": "^1.0",
         "drupal/google_analytics": "^2.2",
         "drupal/image_effects": "^2.1",
         "drupal/moderation_note": "^1.0",
         "drupal/replicate": "1.x-dev",
-        "drupal/replicate_ui": "1.0",
+        "drupal/replicate_ui": "1.x-dev",
         "drupal/responsive_preview": "^1.0",
         "drupal/restui": "^1.15",
         "drupal/revision_log_default": "^1.0",
@@ -67,7 +65,10 @@
         "drupal/yaml_content": "^1.0",
         "drupal/devel": "^1.2",
         "drupal/styleguide": "^1.0",
-        "drupal/bamboo_twig": "^3.3"
+        "drupal/bamboo_twig": "^3.3",
+        "opin/fitzroy": "*",
+        "opin/base": "*",
+        "opin/mc": "*"
     },
     "repositories": [
         {
@@ -81,7 +82,7 @@
         {
             "type": "package",
             "package": {
-                "name": "custom/fitzroy",
+                "name": "opin/fitzroy",
                 "version": "dev-master",
                 "type":"drupal-custom-theme",
                 "source": {
@@ -94,7 +95,7 @@
         {
             "type": "package",
             "package": {
-                "name": "custom/base",
+                "name": "opin/base",
                 "version": "dev-master",
                 "type":"drupal-custom-theme",
                 "source": {
@@ -107,7 +108,7 @@
         {
             "type": "package",
             "package": {
-                "name": "custom/mc",
+                "name": "opin/mc",
                 "version": "dev-master",
                 "type":"drupal-custom-module",
                 "source": {
@@ -119,12 +120,12 @@
         }
     ],
     "scripts": {
-      "post-install-cmd": [
-        "DrupalComposer\\DrupalScaffold\\Plugin::scaffold"
-      ],
-      "post-update-cmd": [
-        "DrupalComposer\\DrupalScaffold\\Plugin::scaffold"
-      ]
+        "post-install-cmd": [
+            "DrupalComposer\\DrupalScaffold\\Plugin::scaffold"
+        ],
+        "post-update-cmd": [
+            "DrupalComposer\\DrupalScaffold\\Plugin::scaffold"
+        ]
     },
     "config": {
         "bin-dir": "bin/",
