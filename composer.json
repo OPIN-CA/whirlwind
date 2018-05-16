@@ -84,30 +84,12 @@
             "url": "https://github.com/OPIN-CA/fitzroy"
         },
         {
-            "type": "package",
-            "package": {
-                "name": "opin/base",
-                "version": "dev-master",
-                "type":"drupal-custom-theme",
-                "source": {
-                    "url": "https://github.com/OPIN-CA/base.git",
-                    "type": "git",
-                    "reference": "master"
-                }
-            }
+            "type": "vcs",
+            "url": "https://github.com/OPIN-CA/base"
         },
         {
-            "type": "package",
-            "package": {
-                "name": "opin/mc",
-                "version": "dev-master",
-                "type":"drupal-custom-module",
-                "source": {
-                    "url": "https://github.com/OPIN-CA/mc.git",
-                    "type": "git",
-                    "reference": "master"
-                }
-            }
+            "type": "vcs",
+            "url": "https://github.com/OPIN-CA/mc"
         }
     ],
     "scripts": {
