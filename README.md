@@ -28,7 +28,7 @@ composer install
 git add .
 git commit -m "Switch to whirlwind"
 drush si lightning
-drupal moi [list of whirlwind modules]
+drush en module_filter admin_toolbar admin_toolbar_tools adminimal_admin_toolbar fitzroy browsersync linkit paragraphs svg_image_field twig_vardumper twig_field_value twig_tweak yaml_content devel kint field_group dropzonejs_eb_widget menu_block pathauto paragraphs_type_permissions -y
 ```
 
 You can now push up to Acquia and have a fancy Whirlwind based site.
