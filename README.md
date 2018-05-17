@@ -6,22 +6,32 @@ In order to create a new project using this distribution run the following comma
 ```
 $ composer create-project opin/whirlwind MY_PROECT --repository-url="https://raw.githubusercontent.com/OPIN-CA/whirlwind/master/"
 ```
-Composer will create a new directory called MY_PROJECT containing a ```docroot``` directory with a full Whirlwind code base therein. You can then install it like you would any other Drupal site.
+Composer will create a new directory called MY_PROJECT containing a ```docroot``` directory with a full Whirlwind code base therein. The last step of the ```composer create-project``` will ask you if you want to delete the VCS (.git, etc.). Say yes to this. Next run:
 
-## Dev Desktop
-
-If you are setting up a new environment using Acquia Dev Desktop or overriding an existing Acquia environment you will need to do so using the "composer install" command (as opposed to "create-project"). Delete the environment's "docroot" folder and add the attached composer.json file to the root directory.
-
-Your file structure should look like this:
 ```
-./
-  - .git/
-  - .gitignore
-  - acquia-utils
-  - README.acquia
-  - composer.json
+cd MY_PROJECT
+git init .
+git add .
+git commit -m "Initial commit"
 ```
-From this directory run "composer install" to install the OPIN whirlwind distribution
+
+to initialize a clean repo and track your files.
+
+You can then perform a regular Drupal install in your prefered way via Dev Desktop, or a VM, or any other method.
+
+## Dev Desktop into an existing site
+
+If you are setting up a new environment using Acquia Dev Desktop to override a site created via Acquia's dashboard you will need to do so using the "composer install" command (as opposed to "create-project"). Pull the environment (code and database) down using Dev Desktop, delete the environment's "docroot" folder, delete and recreate the database, and copy whirlwind's composer.json file to the root directory. Next run:
+
+```
+composer install
+git add .
+git commit -m "Switch to whirlwind"
+drush si lightning
+drupal moi [list of whirlwind modules]
+```
+
+You can now push up to Acquia and have a fancy Whirlwind based site.
 
 ## Maintenance
 ```drush make```, ```drush pm-download```, ```drush pm-update``` and their ilk are the old-school way of maintaining your code base. Forget them. You're in Composer land now!
