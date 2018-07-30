@@ -66,9 +66,11 @@
         "drupal/devel": "^1.2",
         "drupal/styleguide": "^1.0",
         "drupal/bamboo_twig": "^3.3",
-        "opin/fitzroy": "*",
-        "opin/base": "*",
-        "opin/mc": "*"
+        "opin/fitzroy": "~1.0.3",
+        "opin/base": "~1.0.4",
+        "opin/mc": "~1.0.1",
+        "drush/drush": "~8",
+        "drupal/block_visibility_groups": "^1.2"
     },
     "repositories": [
         {
