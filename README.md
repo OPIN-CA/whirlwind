@@ -91,50 +91,54 @@ Settings --> CI/CD --> Environment variables.
 ### Group variables
 
 It is required that you set the following group variables:
-* SSH_PRIVATE_KEY
+* `SSH_PRIVATE_KEY`
 * If using Acquia:
-  * ACQUIA_API_EMAIL
-  * ACQUIA_API_KEY
+  * `ACQUIA_API_EMAIL`
+  * `ACQUIA_API_KEY`
 
-#### SSH_PRIVATE_KEY variable
+#### `SSH_PRIVATE_KEY` variable
 Paste the private key for the CI user account that will be accessing the Dev and
 Staging servers.
 
-#### ACQUIA_API_EMAIL and ACQUIA_API_KEY variables
+#### `ACQUIA_API_EMAIL` and `ACQUIA_API_KEY` variables
 Set up an API token for the Acquia user who will be logging into the Acquia
 servers.
-[https://docs.acquia.com/acquia-cloud/develop/pipelines/cli/install/#configuring-the-client-authentication]
+
+https://docs.acquia.com/acquia-cloud/develop/pipelines/cli/install/#configuring-the-client-authentication
 
 ### Project variables
 
-#### SSH_KNOWN_HOSTS variable
+#### `SSH_KNOWN_HOSTS` variable
 Run `ssh-keyscan` on the SSH url and paste the output into this variable 
 variable.
-[https://docs.gitlab.com/ee/ci/ssh_keys/#verifying-the-ssh-host-keys]
 
-#### THEME_DIR variable
+https://docs.gitlab.com/ee/ci/ssh_keys/#verifying-the-ssh-host-keys
+
+#### `THEME_DIR` variable
 The theme directory name.
 For example, if the theme is located at 
 `docroot/themes/custom/new_project_theme/` then this variable should be
-'new_project_theme'.
+`new_project_theme`.
 
-#### GIT_DEPLOY_URL variable
+#### `GIT_DEPLOY_URL` variable
 The git URL for deployment. It will be something such as
-'testsite@svn-29901.prod.hosting.acquia.com:testsite.git'.
+`testsite@svn-29901.prod.hosting.acquia.com:testsite.git`.
 
-#### SSH_URL variable
+#### `SSH_URL` variable
 SSH URL for running commands on the Dev server.
-Such as 'testsite.dev@staging-30406.prod.hosting.acquia.com'.
+Such as `testsite.dev@staging-30406.prod.hosting.acquia.com`.
 
-#### DRUSH_SA_DEV and DRUSH_SA_STAGE variables
+#### `DRUSH_SA_DEV` and `DRUSH_SA_STAGE` variables
 Drush site aliases for the dev and staging environments. These have to be valid
-on the server, so it's worth checking them from inside and SSH session.
-Examples:
-* @testsite.dev
-* @testsite.test
+on the server, so it's worth checking them from inside an SSH session.
 
-#### DOMAIN_DEV and DOMAIN_STAGE variables
-URLs to the Dev and Staging environments.
 Examples:
-* 'testsitedev.prod.acquia-sites.com'
-* 'testsitestg.prod.acquia-sites.com'
+* `@testsite.dev`
+* `@testsite.test`
+
+#### `DOMAIN_DEV` and `DOMAIN_STAGE` variables
+URLs to the Dev and Staging environments.
+
+Examples:
+* `testsitedev.prod.acquia-sites.com`
+* `testsitestg.prod.acquia-sites.com`
