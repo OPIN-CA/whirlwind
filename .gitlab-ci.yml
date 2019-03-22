@@ -1,0 +1,129 @@
+stages:
+  - build
+  - deploy
+  - post_validate
+
+variables:
+  # Edit group and per-project variables in Gitlab.
+  # (Project or Group settings -> CI/CD -> Environment variables)
+  DOCKER_DRIVER: 'overlay2'
+  MSG_REPO_FILES: 'SITE FILES WERE ADDED TO THE REPO. ABORTING.'
+  MSG_REPO_SQL: 'SQL FILES WERE ADDED TO THE REPO. ABORTING.'
+
+before_script:
+  - 'which ssh-agent || (apt-get update -y && apt-get install openssh-client -y)'
+  - eval $(ssh-agent -s)
+  - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+  - mkdir -p ~/.ssh
+  - chmod 700 ~/.ssh
+  - echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+  - chmod 644 ~/.ssh/known_hosts
+  - git config --global user.email "steve.lavigne+don.joe@opin.ca"
+  - git config --global user.name "Don Joe"
+
+build:
+  image: jessek/alpine_opin_ci:mark_i
+  stage: build
+  script:
+      # Print versions for debugging.
+    - php --version
+    - composer --version
+    - npm --version
+    - gulp --version
+
+      # Run sanity checks on the repo.
+      # .htaccess should be the only file in docroot/sites/default/files.
+    - if [ $(find docroot/sites/*/files/ -type f | grep -vc '.htaccess') -gt 0 ]; then echo $MSG_REPO_FILES; false; fi
+      # There should not be any *.sql files except for a few test ones in core.
+    - FIND_SQL_OUTPUT=$(find ./ -path ./docroot/core -prune -o -iname '*.sql' -print); if [ -z "$FIND_SQL_OUTPUT" ]; then true; else echo $MSG_REPO_SQL; echo $FIND_SQL_OUTPUT; false; fi
+
+      # Check that composer.json is valid.
+    - composer validate
+
+      # Install composer packages.
+    - composer install 
+
+      # Build theme.
+    - cd $CI_PROJECT_DIR/docroot/themes/custom/$THEME_DIR
+    - npm ci
+    - gulp sass-lint-ci
+    - cd -
+
+      # Check Drupal coding standards.
+    - ./bin/phpcs --config-set installed_paths $(realpath vendor/drupal/coder/coder_sniffer)
+    - ./bin/phpcs -i
+    - ./bin/phpcs --standard=Drupal --extensions=php,module,inc,install,test,profile,theme,css,info,txt,md --ignore=node_modules,bower_components,vendor docroot/modules/custom docroot/themes/custom/$THEME_DIR/includes/*.inc docroot/themes/custom/$THEME_DIR/*.theme
+
+
+      #  artifacts:
+      #    name: "$APP_NAME_{CI_COMMIT_SHA}"
+      #    expire_in: '1 week'
+      #    paths:
+      #      - ./
+
+deploy_dev:
+  image: jessek/alpine_opin_ci:mark_i
+  stage: deploy
+  script:
+    - git remote add dev_deploy $GIT_DEPLOY_URL
+    - git branch
+    - git branch -r
+    - git checkout develop
+    - cd $CI_PROJECT_DIR/docroot/themes/custom/$THEME_DIR
+    - npm ci
+    - gulp sass
+      # This commit will normally fail if the CSS is already up to date.
+      # Adding '|| true' keeps it from failing the build.
+    - git commit css/ -m 'Recompiled all CSS.' || true
+    - cd -
+    - git push --force dev_deploy develop
+
+      # Clear caches on Dev.
+    - ssh $SSH_URL -- "drush $DRUSH_SA_DEV cr; drush $DRUSH_SA_DEV ac-domain-purge --email='$ACQUIA_API_EMAIL' --key='$ACQUIA_API_KEY' $DOMAIN_DEV"
+      #    - ssh $SSH_URL -- drush $DRUSH_SA_DEV config-import sync -y
+  only:
+    - develop
+
+deploy_master:
+  image: jessek/alpine_opin_ci:mark_i
+  stage: deploy
+  script:
+    - git remote add dev_deploy $GIT_DEPLOY_URL
+    - git branch
+    - git branch -r
+    - git checkout master
+    - cd $CI_PROJECT_DIR/docroot/themes/custom/$THEME_DIR
+    - npm ci
+    - gulp sass
+      # This commit will normally fail if the CSS is already up to date.
+      # Adding '|| true' keeps it from failing the build.
+    - git commit css/ -m 'Recompiled all CSS.' || true
+    - cd -
+    - git push --force dev_deploy master
+    - ssh $SSH_URL -- "drush $DRUSH_SA_STAGE cr; drush $DRUSH_SA_STAGE ac-domain-purge --email='$ACQUIA_API_EMAIL' --key='$ACQUIA_API_KEY' $DOMAIN_STAGE"
+  only:
+    - master
+
+w3c_validate_dev:
+  image: jessek/alpine_opin_ci:mark_i_java
+  stage: post_validate
+  script: 
+    - cd $CI_PROJECT_DIR/docroot/themes/custom/$THEME_DIR
+    - npm install
+    - gulp w3c-validate --site http://$DOMAIN_DEV
+    - cd -
+  allow_failure: true
+  only:
+    - develop
+
+w3c_validate_stg:
+  image: jessek/alpine_opin_ci:mark_i_java
+  stage: post_validate
+  script: 
+    - cd $CI_PROJECT_DIR/docroot/themes/custom/$THEME_DIR
+    - npm install
+    - gulp w3c-validate --site http://$DOMAIN_STAGE
+    - cd -
+  allow_failure: true
+  only:
+    - master

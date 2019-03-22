@@ -1,8 +1,11 @@
-This is a Composer-based installer for the OPIN Whirlwind distrobution: a forked version of the [Lightning](https://www.drupal.org/project/lightning) Drupal distribution. This fork is being developed by OPIN Software Inc
+This is a Composer-based installer for the OPIN Whirlwind distribution: a forked
+version of the [Lightning](https://www.drupal.org/project/lightning) Drupal
+distribution. This fork is being developed by OPIN Software Inc.
 
 ## Get Started
 
-In order to create a new project using this distribution run the following command:
+In order to create a new project using this distribution run the following
+command:
 ```
 $ composer create-project opin/whirlwind MY_PROECT --repository-url="https://raw.githubusercontent.com/OPIN-CA/whirlwind/master/"
 ```
@@ -71,3 +74,67 @@ If you specify a branch, such as 1.x you must add -dev to the end of the version
 If you peek at the ```.gitignore``` we provide, you'll see that certain directories, including all directories containing contributed projects, are excluded from source control. This might be a bit disconcerting if you're newly arrived from Planet Drush, but in a Composer-based project like this one, **you SHOULD NOT commit your installed dependencies to source control**.
 
 When you set up the project, Composer will create a file called ```composer.lock```, which is a list of which dependencies were installed, and in which versions. **Commit ```composer.lock``` to source control!** Then, when your colleagues want to spin up their own copies of the project, all they'll have to do is run ```composer install```, which will install the correct versions of everything in ```composer.lock```.
+
+## Gitlab configuration
+
+There are two scopes for configuring the variables: group and project.
+
+Group variables apply to all projects within that group. They can be accessed
+by going to the group and navigating to
+Settings --> CI/CD --> Environment variables.
+
+Project variables apply only to that project. They can be accessed by going
+to the project and navigating to
+Settings --> CI/CD --> Environment variables.
+
+
+### Group variables
+
+It is required that you set the following group variables:
+* SSH_PRIVATE_KEY
+* If using Acquia:
+  * ACQUIA_API_EMAIL
+  * ACQUIA_API_KEY
+
+#### SSH_PRIVATE_KEY variable
+Paste the private key for the CI user account that will be accessing the Dev and
+Staging servers.
+
+#### ACQUIA_API_EMAIL and ACQUIA_API_KEY variables
+Set up an API token for the Acquia user who will be logging into the Acquia
+servers.
+[https://docs.acquia.com/acquia-cloud/develop/pipelines/cli/install/#configuring-the-client-authentication]
+
+### Project variables
+
+#### SSH_KNOWN_HOSTS variable
+Run `ssh-keyscan` on the SSH url and paste the output into this variable 
+variable.
+[https://docs.gitlab.com/ee/ci/ssh_keys/#verifying-the-ssh-host-keys]
+
+#### THEME_DIR variable
+The theme directory name.
+For example, if the theme is located at 
+`docroot/themes/custom/new_project_theme/` then this variable should be
+'new_project_theme'.
+
+#### GIT_DEPLOY_URL variable
+The git URL for deployment. It will be something such as
+'testsite@svn-29901.prod.hosting.acquia.com:testsite.git'.
+
+#### SSH_URL variable
+SSH URL for running commands on the Dev server.
+Such as 'testsite.dev@staging-30406.prod.hosting.acquia.com'.
+
+#### DRUSH_SA_DEV and DRUSH_SA_STAGE variables
+Drush site aliases for the dev and staging environments. These have to be valid
+on the server, so it's worth checking them from inside and SSH session.
+Examples:
+* @testsite.dev
+* @testsite.test
+
+#### DOMAIN_DEV and DOMAIN_STAGE variables
+URLs to the Dev and Staging environments.
+Examples:
+* 'testsitedev.prod.acquia-sites.com'
+* 'testsitestg.prod.acquia-sites.com'
