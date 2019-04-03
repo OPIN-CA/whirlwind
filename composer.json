@@ -45,8 +45,6 @@
         "drupal/google_analytics": "^2.2",
         "drupal/image_effects": "^2.1",
         "drupal/moderation_note": "^1.0",
-        "drupal/replicate": "^1.0",
-        "drupal/replicate_ui": "^1.0",
         "drupal/responsive_preview": "^1.0",
         "drupal/restui": "^1.15",
         "drupal/revision_log_default": "^1.0",
