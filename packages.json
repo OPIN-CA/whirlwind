@@ -1,16 +1,16 @@
 {
-    "packages": {
-        "opin/whirlwind": {
-            "1.0.0": {
-                "name": "opin/whirlwind",
-                "source": {
-                    "reference": "master",
-                    "type": "git",
-                    "url": "git@github.com:OPIN-CA/whirlwind.git"
-                },
-                "type": "project",
-                "version": "1.0.0"
-            }
-        }
+  "packages": {
+    "opin/whirlwind": {
+      "1.0.1": {
+        "name": "opin/whirlwind",
+        "source": {
+          "reference": "1.0.1",
+          "type": "git",
+          "url": "git@github.com:OPIN-CA/whirlwind.git"
+        },
+        "type": "project",
+        "version": "1.0.1"
+      }
     }
+  }
 }
