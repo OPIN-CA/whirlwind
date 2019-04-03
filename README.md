@@ -7,7 +7,7 @@ distribution. This fork is being developed by OPIN Software Inc.
 In order to create a new project using this distribution run the following
 command:
 ```
-$ composer create-project opin/whirlwind MY_PROECT --repository-url="https://raw.githubusercontent.com/OPIN-CA/whirlwind/master/"
+$ composer create-project opin/whirlwind MY_PROECT --repository="https://raw.githubusercontent.com/OPIN-CA/whirlwind/master/"
 ```
 Composer will create a new directory called MY_PROJECT containing a ```docroot``` directory with a full Whirlwind code base therein. The last step of the ```composer create-project``` will ask you if you want to delete the VCS (.git, etc.). Say yes to this. Next run:
 
