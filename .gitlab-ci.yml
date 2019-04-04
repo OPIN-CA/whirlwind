@@ -11,15 +11,14 @@ variables:
   MSG_REPO_SQL: 'SQL FILES WERE ADDED TO THE REPO. ABORTING.'
 
 before_script:
-  - 'which ssh-agent || (apt-get update -y && apt-get install openssh-client -y)'
   - eval $(ssh-agent -s)
   - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
   - mkdir -p ~/.ssh
   - chmod 700 ~/.ssh
   - echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
   - chmod 644 ~/.ssh/known_hosts
-  - git config --global user.email "steve.lavigne+don.joe@opin.ca"
-  - git config --global user.name "Don Joe"
+  - git config --global user.email "jesse.kahtava@opin.ca"
+  - git config --global user.name "Jesse Kahtava"
 
 build:
   image: jessek/alpine_opin_ci:mark_i
@@ -40,9 +39,6 @@ build:
       # Check that composer.json is valid.
     - composer validate
 
-      # Install composer packages.
-    - composer install 
-
       # Build theme.
     - cd $CI_PROJECT_DIR/docroot/themes/custom/$THEME_DIR
     - npm ci
@@ -54,14 +50,7 @@ build:
     - ./bin/phpcs -i
     - ./bin/phpcs --standard=Drupal --extensions=php,module,inc,install,test,profile,theme,css,info,txt,md --ignore=node_modules,bower_components,vendor docroot/modules/custom docroot/themes/custom/$THEME_DIR/includes/*.inc docroot/themes/custom/$THEME_DIR/*.theme
 
-
-      #  artifacts:
-      #    name: "$APP_NAME_{CI_COMMIT_SHA}"
-      #    expire_in: '1 week'
-      #    paths:
-      #      - ./
-
-deploy_dev:
+acquia_deploy_dev:
   image: jessek/alpine_opin_ci:mark_i
   stage: deploy
   script:
@@ -78,13 +67,17 @@ deploy_dev:
     - cd -
     - git push --force dev_deploy develop
 
-      # Clear caches on Dev.
-    - ssh $SSH_URL -- "drush $DRUSH_SA_DEV cr; drush $DRUSH_SA_DEV ac-domain-purge --email='$ACQUIA_API_EMAIL' --key='$ACQUIA_API_KEY' $DOMAIN_DEV"
-      #    - ssh $SSH_URL -- drush $DRUSH_SA_DEV config-import sync -y
+      # For Acquia environments.
+    - ssh $SSH_URL -- "drush $SITE_ID.dev.dev cr; drush $SITE_ID.dev.dev ac-domain-purge --email='$ACQUIA_API_EMAIL' --key='$ACQUIA_API_KEY' $DOMAIN_DEV"
+      # - test ! -z $PANTHEON_MACHINE_TOKEN && true || ssh $SSH_URL -- drush $SITE_ID.dev.dev config-import sync -y
   only:
-    - develop
+    refs:
+      - develop
+  except:
+    variables:
+      - $PANTHEON_MACHINE_TOKEN
 
-deploy_master:
+acquia_deploy_master:
   image: jessek/alpine_opin_ci:mark_i
   stage: deploy
   script:
@@ -100,9 +93,44 @@ deploy_master:
     - git commit css/ -m 'Recompiled all CSS.' || true
     - cd -
     - git push --force dev_deploy master
-    - ssh $SSH_URL -- "drush $DRUSH_SA_STAGE cr; drush $DRUSH_SA_STAGE ac-domain-purge --email='$ACQUIA_API_EMAIL' --key='$ACQUIA_API_KEY' $DOMAIN_STAGE"
+
+      # For Acquia environments.
+    - ssh $SSH_URL -- "drush $SITE_ID.test.test cr; drush $SITE_ID.test.test ac-domain-purge --email='$ACQUIA_API_EMAIL' --key='$ACQUIA_API_KEY' $DOMAIN_STAGE"
+
   only:
-    - master
+    refs:
+      - master
+  except:
+    variables:
+      - $PANTHEON_MACHINE_TOKEN
+
+pantheon_deploy:
+  image: jessek/alpine_opin_ci:mark_i
+  stage: deploy
+  script:
+    - git remote add dev_deploy $GIT_DEPLOY_URL
+    - git branch
+    - git branch -r
+    - git checkout develop
+    - cd $CI_PROJECT_DIR/docroot/themes/custom/$THEME_DIR
+    - npm ci
+    - gulp sass
+      # This commit will normally fail if the CSS is already up to date.
+      # Adding '|| true' keeps it from failing the build.
+    - git commit css/ -m 'Recompiled all CSS.' || true
+    - cd -
+    - git push --force dev_deploy develop:master 
+
+      # For Pantheon environments.
+    - terminus auth:login --machine-token=$PANTHEON_MACHINE_TOKEN
+    - terminus env:clear-cache $SITE_ID.dev
+
+  only:
+    refs:
+      - develop
+      - master 
+    variables:
+      - $PANTHEON_MACHINE_TOKEN
 
 w3c_validate_dev:
   image: jessek/alpine_opin_ci:mark_i_java
@@ -110,7 +138,7 @@ w3c_validate_dev:
   script: 
     - cd $CI_PROJECT_DIR/docroot/themes/custom/$THEME_DIR
     - npm install
-    - gulp w3c-validate --site http://$DOMAIN_DEV
+    - gulp w3c-validate --site $DEV_LIVE_URL
     - cd -
   allow_failure: true
   only:
@@ -122,7 +150,7 @@ w3c_validate_stg:
   script: 
     - cd $CI_PROJECT_DIR/docroot/themes/custom/$THEME_DIR
     - npm install
-    - gulp w3c-validate --site http://$DOMAIN_STAGE
+    - gulp w3c-validate --site $DEV_LIVE_URL
     - cd -
   allow_failure: true
   only:
