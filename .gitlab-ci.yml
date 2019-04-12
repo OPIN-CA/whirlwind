@@ -7,8 +7,13 @@ variables:
   # Edit group and per-project variables in Gitlab.
   # (Project or Group settings -> CI/CD -> Environment variables)
   DOCKER_DRIVER: 'overlay2'
-  MSG_REPO_FILES: 'SITE FILES WERE ADDED TO THE REPO. ABORTING.'
-  MSG_REPO_SQL: 'SQL FILES WERE ADDED TO THE REPO. ABORTING.'
+  MSG_REPO_FILES: 'SITE FILES WERE ADDED TO THE REPO. ABORTING.\n
+    Please remove the contents of sites/default/files from the git repo.\n
+    Only .gitignore and/or .htaccess files should be committed to this
+    directory.'
+  MSG_REPO_SQL: 'SQL FILES WERE ADDED TO THE REPO. ABORTING.\n
+    This is a security concern. Please use something such as 
+    BFG Repo-Cleaner to remove the offending SQL files.'
 
 before_script:
   - eval $(ssh-agent -s)
@@ -31,8 +36,9 @@ build:
     - gulp --version
 
       # Run sanity checks on the repo.
-      # .htaccess should be the only file in docroot/sites/default/files.
-    - if [ $(find docroot/sites/*/files/ -type f | grep -vc '.htaccess') -gt 0 ]; then echo $MSG_REPO_FILES; false; fi
+      # .htaccess and/or .gitignore should be the only file(s) in 
+      # docroot/sites/default/files.
+    - if [ $(find docroot/sites/*/files/ -type f | grep -vc '\(.htaccess\|.gitignore\)') -gt 0 ]; then echo $MSG_REPO_FILES; false; fi
       # There should not be any *.sql files except for a few test ones in core.
     - FIND_SQL_OUTPUT=$(find ./ -path ./docroot/core -prune -o -iname '*.sql' -print); if [ -z "$FIND_SQL_OUTPUT" ]; then true; else echo $MSG_REPO_SQL; echo $FIND_SQL_OUTPUT; false; fi
 
@@ -68,8 +74,7 @@ acquia_deploy_dev:
     - git push --force dev_deploy develop
 
       # For Acquia environments.
-    - ssh $SSH_URL -- "drush $SITE_ID.dev.dev cr; drush $SITE_ID.dev.dev ac-domain-purge --email='$ACQUIA_API_EMAIL' --key='$ACQUIA_API_KEY' $DOMAIN_DEV"
-      # - test ! -z $PANTHEON_MACHINE_TOKEN && true || ssh $SSH_URL -- drush $SITE_ID.dev.dev config-import sync -y
+    - ssh $ACQUIA_SSH_URL -- "drush @$SITE_ID.dev.dev cr; drush @$SITE_ID.dev.dev ac-domain-purge --email='$ACQUIA_API_EMAIL' --key='$ACQUIA_API_KEY' $DEV_LIVE_URL"
   only:
     refs:
       - develop
@@ -95,7 +100,7 @@ acquia_deploy_master:
     - git push --force dev_deploy master
 
       # For Acquia environments.
-    - ssh $SSH_URL -- "drush $SITE_ID.test.test cr; drush $SITE_ID.test.test ac-domain-purge --email='$ACQUIA_API_EMAIL' --key='$ACQUIA_API_KEY' $DOMAIN_STAGE"
+    - ssh $ACQUIA_SSH_URL -- "drush @$SITE_ID.test.test cr; drush @$SITE_ID.test.test ac-domain-purge --email='$ACQUIA_API_EMAIL' --key='$ACQUIA_API_KEY' $DOMAIN_STAGE"
 
   only:
     refs:
@@ -150,7 +155,31 @@ w3c_validate_stg:
   script: 
     - cd $CI_PROJECT_DIR/docroot/themes/custom/$THEME_DIR
     - npm install
-    - gulp w3c-validate --site $DEV_LIVE_URL
+    - gulp w3c-validate --site $TEST_LIVE_URL
+    - cd -
+  allow_failure: true
+  only:
+    - master
+
+axe_validate_dev:
+  image: zenika/alpine-chrome:with-node
+  stage: post_validate
+  script: 
+    - cd $CI_PROJECT_DIR/docroot/themes/custom/$THEME_DIR
+    - npm install
+    - gulp axe-validate --site $DEV_LIVE_URL
+    - cd -
+  allow_failure: true
+  only:
+    - develop
+
+axe_validate_stg:
+  image: zenika/alpine-chrome:with-node
+  stage: post_validate
+  script: 
+    - cd $CI_PROJECT_DIR/docroot/themes/custom/$THEME_DIR
+    - npm install
+    - gulp axe-validate --site $TEST_LIVE_URL
     - cd -
   allow_failure: true
   only:

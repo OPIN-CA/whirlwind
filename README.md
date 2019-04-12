@@ -109,8 +109,8 @@ https://docs.acquia.com/acquia-cloud/develop/pipelines/cli/install/#configuring-
 ### Project variables
 
 #### `SSH_KNOWN_HOSTS` variable
-Run `ssh-keyscan` on the SSH url and paste the output into this variable 
-variable.
+Run `ssh-keyscan` on the Acquia or Pantheon SSH url and paste the output into 
+this variable.
 
 https://docs.gitlab.com/ee/ci/ssh_keys/#verifying-the-ssh-host-keys
 
@@ -124,21 +124,21 @@ For example, if the theme is located at
 The git URL for deployment. It will be something such as
 `testsite@svn-29901.prod.hosting.acquia.com:testsite.git`.
 
-#### `SSH_URL` variable
-SSH URL for running commands on the Dev server.
+#### `ACQUIA_SSH_URL` variable
+SSH URL for running commands on the Acquia Dev server.
 Such as `testsite.dev@staging-30406.prod.hosting.acquia.com`.
 
-#### `DRUSH_SA_DEV` and `DRUSH_SA_STAGE` variables
-Drush site aliases for the dev and staging environments. These have to be valid
-on the server, so it's worth checking them from inside an SSH session.
+#### `DEV_LIVE_URL` and `TEST_LIVE_URL` variables
+URLs for the Dev and Test (Staging) environments.
 
-Examples:
-* `@testsite.dev`
-* `@testsite.test`
+#### `SITE_ID` variable
+For Acquia this would be the long site alias.
+Example:
+For an alias such as @cl.prod_opinacer29.dev.dev the generic SITE_ID would
+be cl.prod_opinacer29.
 
-#### `DOMAIN_DEV` and `DOMAIN_STAGE` variables
-URLs to the Dev and Staging environments.
-
-Examples:
-* `testsitedev.prod.acquia-sites.com`
-* `testsitestg.prod.acquia-sites.com`
+For Pantheon the site id can be found at the end of the git clone command
+provided in "Connection Info".
+Example:
+For `git clone ssh://codeserver.dev.cf88500f-f3d6-45ed-a8aa-99afa52fbe4e@codeserver.dev.cf88500f-f7d6-45ed-a8aa-96afa52fbe5e.drush.in:2222/~/repository.git new-project`
+the site id would be 'new-project'.
