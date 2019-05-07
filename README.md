@@ -94,26 +94,38 @@ It is required that you set the following group variables:
 * `SSH_PRIVATE_KEY`
 * If using Acquia:
   * `ACQUIA_API_EMAIL`
-  * `ACQUIA_API_KEY`
+  * `ACQUIA_API_SECRET`
 
 #### `SSH_PRIVATE_KEY` variable
 Paste the private key for the CI user account that will be accessing the Dev and
 Staging servers.
 
-#### `ACQUIA_API_EMAIL` and `ACQUIA_API_KEY` variables
+#### `ACQUIA_API_EMAIL` and `ACQUIA_API_SECRET` variables
 Set up an API token for the Acquia user who will be logging into the Acquia
-servers.
+servers. Generating an API token will create a key and a secret code. Only the
+secret code is needed.
 
 https://docs.acquia.com/acquia-cloud/develop/pipelines/cli/install/#configuring-the-client-authentication
 
 ### Project variables
 
 #### `SSH_KNOWN_HOSTS` variable
-Run `ssh-keyscan` on the Acquia or Pantheon SSH url and paste the output into 
-this variable.
+Run `ssh-keyscan` on the Acquia or Pantheon SSH url(s) and paste the output into 
+this variable. The `ssh-keyscan` command is likely installed locally and can be
+run from anywhere.
+
+For a Pantheon site only the git repo URL needs to be scanned.
 
 Example:
 `ssh-keyscan -p 2222 codeserver.dev.cabf666c-666e-666d-a666-666b666ecb6.drush.in`
+
+For an Acquia site the git repo URL _and_ the SSH url need to be scanned. Merge
+the output of both keyscan commands and put it in a single SSH_KNOWN_HOSTS
+variable.
+
+Example:
+`ssh-keyscan svn-29885.prod.hosting.acquia.com`
+`ssh-keyscan staging-30445.prod.hosting.acquia.com`
 
 https://docs.gitlab.com/ee/ci/ssh_keys/#verifying-the-ssh-host-keys
 
