@@ -64,7 +64,7 @@
     "drupal/styleguide": "^1.0",
     "drupal/bamboo_twig": "^3.3",
     "opin/fitzroy": "~1.0.3",
-    "opin/base": "~1.0.4",
+    "opin/base": "~1.2.0",
     "opin/mc": "~1.0.1",
     "drush/drush": "~8",
     "drupal/block_visibility_groups": "^1.2",
