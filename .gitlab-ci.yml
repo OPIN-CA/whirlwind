@@ -7,10 +7,12 @@ variables:
   # Edit group and per-project variables in Gitlab.
   # (Project or Group settings -> CI/CD -> Environment variables)
   DOCKER_DRIVER: 'overlay2'
-  MSG_REPO_FILES: 'SITE FILES WERE ADDED TO THE REPO. ABORTING.\n
+  MSG_REPO_FILES_DIR: 'SITE FILES WERE ADDED TO THE REPO. ABORTING.\n
     Please remove the contents of sites/default/files from the git repo.\n
     Only .gitignore and/or .htaccess files should be committed to this
     directory.'
+  MSG_REPO_FILES_SYMLINK: 'SITE FILES SYMLINK WAS ADDED TO THE REPO. ABORTING.\n
+    Please remove the sites/default/files symlink from the git repo.'
   MSG_REPO_SQL: 'SQL FILES WERE ADDED TO THE REPO. ABORTING.\n
     This is a security concern. Please use something such as 
     BFG Repo-Cleaner to remove the offending SQL files.'
@@ -36,9 +38,11 @@ build:
     - gulp --version
 
       # Run sanity checks on the repo.
-      # .htaccess and/or .gitignore should be the only file(s) in 
+      # On Acquia .htaccess and/or .gitignore should be the only file(s) in
       # docroot/sites/default/files.
-    - if [ $(find docroot/sites/*/files/ -type f | grep -vc '\(.htaccess\|.gitignore\)') -gt 0 ]; then echo $MSG_REPO_FILES; false; fi
+      - if [ $(find docroot/sites/*/files/ -type f | grep -vc '\(.htaccess\|.gitignore\)') -gt 0 ]; then echo $MSG_REPO_FILES_DIR; false; fi
+      # On Pantheon there can not be a 'files' symlink.
+      - if [[ -L docroot/sites/default/files ]]; then echo $MSG_REPO_FILES_SYMLINK; false; fi
       # There should not be any *.sql files except for a few test ones in core.
     - FIND_SQL_OUTPUT=$(find ./ -path ./docroot/core -prune -o -iname '*.sql' -print); if [ -z "$FIND_SQL_OUTPUT" ]; then true; else echo $MSG_REPO_SQL; echo $FIND_SQL_OUTPUT; false; fi
 
