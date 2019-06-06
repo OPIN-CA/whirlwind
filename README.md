@@ -101,11 +101,12 @@ Paste the private key for the CI user account that will be accessing the Dev and
 Staging servers.
 
 #### `ACQUIA_API_EMAIL` and `ACQUIA_API_SECRET` variables
-Set up an API token for the Acquia user who will be logging into the Acquia
-servers. Generating an API token will create a key and a secret code. Only the
-secret code is needed.
+These are the Acquia Cloud API credentials for the user who will be logging
+nto the Acquia server. The credentials can be found by going to your Account in
+Acquia cloud, clicking on the Credentials tab and scrolling down to Cloud API.
+There you will see the Acquia Cloud API private key.
 
-https://docs.acquia.com/acquia-cloud/develop/pipelines/cli/install/#configuring-the-client-authentication
+https://docs.acquia.com/acquia-cloud/develop/api/auth/v1/
 
 ### Project variables
 
