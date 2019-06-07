@@ -37,13 +37,13 @@ build:
     - npm --version
     - gulp --version
 
-      # Run sanity checks on the repo.
-      # On Acquia .htaccess and/or .gitignore should be the only file(s) in
-      # docroot/sites/default/files.
-      - if [ $(find docroot/sites/*/files/ -type f | grep -vc '\(.htaccess\|.gitignore\)') -gt 0 ]; then echo $MSG_REPO_FILES_DIR; false; fi
-      # On Pantheon there can not be a 'files' symlink.
-      - if [[ -L docroot/sites/default/files ]]; then echo $MSG_REPO_FILES_SYMLINK; false; fi
-      # There should not be any *.sql files except for a few test ones in core.
+    # Run sanity checks on the repo.
+    # On Acquia .htaccess and/or .gitignore should be the only file(s) in
+    # docroot/sites/default/files.
+    - if [ $(find docroot/sites/*/files/ -type f | grep -vc '\(.htaccess\|.gitignore\)') -gt 0 ]; then echo $MSG_REPO_FILES_DIR; false; fi
+    # On Pantheon there can not be a 'files' symlink.
+    - if [[ -L docroot/sites/default/files ]]; then echo $MSG_REPO_FILES_SYMLINK; false; fi
+    # There should not be any *.sql files except for a few test ones in core.
     - FIND_SQL_OUTPUT=$(find ./ -path ./docroot/core -prune -o -iname '*.sql' -print); if [ -z "$FIND_SQL_OUTPUT" ]; then true; else echo $MSG_REPO_SQL; echo $FIND_SQL_OUTPUT; false; fi
 
       # Check that composer.json is valid.
@@ -77,7 +77,8 @@ acquia_deploy_dev:
     - cd -
     - git push --force dev_deploy develop
 
-      # For Acquia environments.
+      # For Acquia environments. $DEV_LIVE_URL needs the domain name _without_
+      # the http:// or https:// scheme prefix.
     - ssh $ACQUIA_SSH_URL -- "drush @$SITE_ID.dev.dev cr; drush @$SITE_ID.dev.dev ac-domain-purge --email='$ACQUIA_API_EMAIL' --key='$ACQUIA_API_SECRET' $DEV_LIVE_URL"
   only:
     refs:
@@ -103,8 +104,9 @@ acquia_deploy_master:
     - cd -
     - git push --force dev_deploy master
 
-      # For Acquia environments.
-    - ssh $ACQUIA_SSH_URL -- "drush @$SITE_ID.test.test cr; drush @$SITE_ID.test.test ac-domain-purge --email='$ACQUIA_API_EMAIL' --key='$ACQUIA_API_SECRET' $DOMAIN_STAGE"
+      # For Acquia environments. $TEST_LIVE_URL needs the domain name _without_
+      # the http:// or https:// scheme prefix.
+    - ssh $ACQUIA_SSH_URL -- "drush @$SITE_ID.test.test cr; drush @$SITE_ID.test.test ac-domain-purge --email='$ACQUIA_API_EMAIL' --key='$ACQUIA_API_SECRET' $TEST_LIVE_URL"
 
   only:
     refs:
