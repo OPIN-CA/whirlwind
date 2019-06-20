@@ -102,7 +102,9 @@ Staging servers.
 
 #### `ACQUIA_API_EMAIL` and `ACQUIA_API_SECRET` variables
 These are the Acquia Cloud API credentials for the user who will be logging
-into the Acquia server. The credentials can be found by going to your Account in
+into the Acquia server. _This is not an Acquia API token_. 
+
+The credentials can be found by going to your Account in
 Acquia cloud, clicking on the Credentials tab and scrolling down to Cloud API.
 There you will see the Acquia Cloud API private key.
 
