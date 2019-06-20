@@ -102,7 +102,7 @@ Staging servers.
 
 #### `ACQUIA_API_EMAIL` and `ACQUIA_API_SECRET` variables
 These are the Acquia Cloud API credentials for the user who will be logging
-nto the Acquia server. The credentials can be found by going to your Account in
+into the Acquia server. The credentials can be found by going to your Account in
 Acquia cloud, clicking on the Credentials tab and scrolling down to Cloud API.
 There you will see the Acquia Cloud API private key.
 
@@ -122,7 +122,7 @@ Example:
 
 For an Acquia site the git repo URL _and_ the SSH url need to be scanned. Merge
 the output of both keyscan commands and put it in a single SSH_KNOWN_HOSTS
-variable.
+variable. Both URLs can be found in Dev Desktop.
 
 Example:
 `ssh-keyscan svn-29885.prod.hosting.acquia.com`
