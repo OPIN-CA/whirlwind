@@ -79,7 +79,7 @@ acquia_deploy_dev:
 
       # For Acquia environments. $DEV_LIVE_URL needs the domain name _without_
       # the http:// or https:// scheme prefix.
-    - ssh $ACQUIA_SSH_URL -- "drush @$SITE_ID.dev.dev cr; drush @$SITE_ID.dev.dev ac-domain-purge --email='$ACQUIA_API_EMAIL' --key='$ACQUIA_API_SECRET' $DEV_LIVE_URL"
+    - ssh $ACQUIA_SSH_URL -- "drush @$SITE_ID.dev cr; drush @$SITE_ID.dev ac-domain-purge --email='$ACQUIA_API_EMAIL' --key='$ACQUIA_API_SECRET' $DEV_LIVE_URL"
   only:
     refs:
       - develop
@@ -106,7 +106,7 @@ acquia_deploy_master:
 
       # For Acquia environments. $TEST_LIVE_URL needs the domain name _without_
       # the http:// or https:// scheme prefix.
-    - ssh $ACQUIA_SSH_URL -- "drush @$SITE_ID.test.test cr; drush @$SITE_ID.test.test ac-domain-purge --email='$ACQUIA_API_EMAIL' --key='$ACQUIA_API_SECRET' $TEST_LIVE_URL"
+    - ssh $ACQUIA_SSH_URL -- "drush @$SITE_ID.test cr; drush @$SITE_ID.test ac-domain-purge --email='$ACQUIA_API_EMAIL' --key='$ACQUIA_API_SECRET' $TEST_LIVE_URL"
 
   only:
     refs:
