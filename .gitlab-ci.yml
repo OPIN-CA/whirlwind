@@ -149,7 +149,7 @@ w3c_validate_dev:
   script: 
     - cd $CI_PROJECT_DIR/docroot/themes/custom/$THEME_DIR
     - npm install
-    - gulp w3c-validate --site $DEV_LIVE_URL
+    - gulp w3c-validate --site $DEV_LIVE_URL --username $DEV_LIVE_USERNAME --password $DEV_LIVE_PASSWORD
     - cd -
   allow_failure: true
   only:
@@ -161,7 +161,7 @@ w3c_validate_stg:
   script: 
     - cd $CI_PROJECT_DIR/docroot/themes/custom/$THEME_DIR
     - npm install
-    - gulp w3c-validate --site $TEST_LIVE_URL
+    - gulp w3c-validate --site $TEST_LIVE_URL --username $TEST_LIVE_USERNAME --password $TEST_LIVE_PASSWORD
     - cd -
   allow_failure: true
   only:
