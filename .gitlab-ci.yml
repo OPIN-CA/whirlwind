@@ -147,10 +147,10 @@ w3c_validate_dev:
   image: jessek/alpine_opin_ci:mark_i_java
   stage: post_validate
   script: 
-    - cd $CI_PROJECT_DIR/docroot/themes/custom/$THEME_DIR
+    - git clone https://github.com/OPIN-CA/base.git
+    - cd base
     - npm install
     - gulp w3c-validate --site $DEV_LIVE_URL --username $DEV_LIVE_USERNAME --password $DEV_LIVE_PASSWORD
-    - cd -
   allow_failure: true
   only:
     - develop
@@ -159,34 +159,34 @@ w3c_validate_stg:
   image: jessek/alpine_opin_ci:mark_i_java
   stage: post_validate
   script: 
-    - cd $CI_PROJECT_DIR/docroot/themes/custom/$THEME_DIR
+    - git clone https://github.com/OPIN-CA/base.git
+    - cd base
     - npm install
     - gulp w3c-validate --site $TEST_LIVE_URL --username $TEST_LIVE_USERNAME --password $TEST_LIVE_PASSWORD
-    - cd -
   allow_failure: true
   only:
     - master
 
-axe_validate_dev:
-  image: zenika/alpine-chrome:with-node
-  stage: post_validate
-  script: 
-    - cd $CI_PROJECT_DIR/docroot/themes/custom/$THEME_DIR
-    - npm install
-    - gulp axe-validate --site $DEV_LIVE_URL
-    - cd -
-  allow_failure: true
-  only:
-    - develop
-
-axe_validate_stg:
-  image: zenika/alpine-chrome:with-node
-  stage: post_validate
-  script: 
-    - cd $CI_PROJECT_DIR/docroot/themes/custom/$THEME_DIR
-    - npm install
-    - gulp axe-validate --site $TEST_LIVE_URL
-    - cd -
-  allow_failure: true
-  only:
-    - master
+      #axe_validate_dev:
+      #  image: zenika/alpine-chrome:with-node
+      #  stage: post_validate
+      #  script: 
+      #    - cd $CI_PROJECT_DIR/docroot/themes/custom/$THEME_DIR
+      #    - npm install
+      #    - gulp axe-validate --site $DEV_LIVE_URL
+      #    - cd -
+      #  allow_failure: true
+      #  only:
+      #    - develop
+      #
+      #axe_validate_stg:
+      #  image: zenika/alpine-chrome:with-node
+      #  stage: post_validate
+      #  script: 
+      #    - cd $CI_PROJECT_DIR/docroot/themes/custom/$THEME_DIR
+      #    - npm install
+      #    - gulp axe-validate --site $TEST_LIVE_URL
+      #    - cd -
+      #  allow_failure: true
+      #  only:
+      #    - master
