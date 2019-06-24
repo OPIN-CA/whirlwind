@@ -169,3 +169,12 @@ clearing the cache.
 
 #### `DEV_LIVE_USERNAME` and `DEV_LIVE_PASSWORD` variable
 If you're live Dev environment uses HTTP Basic Authorization then put the username and passwords into these variables.
+
+#### `MODULE_IGNORE_LIST` variable
+Custom modules for PHP CodeSniffer to ignore. Only use for legacy custom modules
+that are outside the scope of work.
+
+
+This variables is used to build out a regular expression that is run on the
+command line. The format for multiple modules is as follows:
+'module1|module2|module3'.

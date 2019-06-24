@@ -58,7 +58,7 @@ build:
       # Check Drupal coding standards.
     - ./bin/phpcs --config-set installed_paths vendor/drupal/coder/coder_sniffer
     - ./bin/phpcs -i
-    - ./bin/phpcs --standard=Drupal --extensions=php,module,inc,install,test,profile,theme,css,info,txt,md --ignore=node_modules,bower_components,vendor docroot/modules/custom docroot/themes/custom/$THEME_DIR/includes/*.inc docroot/themes/custom/$THEME_DIR/*.theme
+    - ./bin/phpcs --standard=Drupal --extensions=php,module,inc,install,test,profile,theme,css,info,txt,md --ignore=node_modules,bower_components,vendor,\(web\|docroot\)/modules/custom/\($MODULE_IGNORE_LIST\|FORCE\) docroot/modules/custom $(find docroot/themes/custom/$THEME_DIR/ -type f -iname '*.inc' -or -iname '*.theme' -or -iname '*.php')
 
 acquia_deploy_dev:
   image: jessek/alpine_opin_ci:mark_i
